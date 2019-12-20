@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+
 const initialColor = {
   color: "",
   code: { hex: "" }
@@ -21,13 +23,34 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
+    axiosWithAuth().put(`/colors/${colorToEdit.id}`, colorToEdit)
+    .then(response => {
+      axiosWithAuth().get("/colors")
+      .then(response => {
+        updateColors(response.data)
+      })
+    })
+    .catch(error => {
+      console.log(error)
+    })
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    axiosWithAuth().delete(`/colors/${color.id}`)
+    .then(response => {
+      console.log(response)
+      updateColors(colors => colors.filter(item => (
+        item.id !== color.id
+      )))
+    })
+    .catch(error => {
+      console.log(error)
+    })
   };
 
   return (
+
     <div className="colors-wrap">
       <p>colors</p>
       <ul>
