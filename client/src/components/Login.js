@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
@@ -23,7 +24,7 @@ const Login = (props) => {
     .then(response => {
       console.log(response)
       localStorage.setItem("token", response.data.payload);
-      props.history.push("/bubble-page")
+      props.history.push("/bubblepage")
     })
     .catch(error => {
       console.log(error)
@@ -39,13 +40,14 @@ const Login = (props) => {
         type="text"
         name="username"
         onChange={handleChanges}
+        value={user.username}
         />
         <label>Password: </label>
         <input 
         type="password"
         name="password"
         onChange={handleChanges}
-
+        value={user.password}
         />
         <button>Log In</button>
       </form>
